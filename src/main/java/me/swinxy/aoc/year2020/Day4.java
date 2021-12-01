@@ -1,4 +1,4 @@
-package me.swinxy.aoc2020;
+package me.swinxy.aoc.year2020;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,7 +51,7 @@ public class Day4 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		InputStream stream = Day4.class.getClassLoader().getResourceAsStream("day4.txt");
+		InputStream stream = Day4.class.getClassLoader().getResourceAsStream("2020/day4.txt");
 		if (stream == null) {
 			throw new NullPointerException();
 		}

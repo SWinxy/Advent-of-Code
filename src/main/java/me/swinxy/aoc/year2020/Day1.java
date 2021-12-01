@@ -1,6 +1,8 @@
-package me.swinxy.aoc2020;
+package me.swinxy.aoc.year2020;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ public class Day1 {
 	public static final int CURRENT_YEAR = 2020;
 
 	public static void main(String[] args) {
-		InputStream stream = Day1.class.getClassLoader().getResourceAsStream("day1.txt");
+		InputStream stream = Day1.class.getClassLoader().getResourceAsStream("2020/day1.txt");
 		if (stream == null) {
 			throw new NullPointerException();
 		}

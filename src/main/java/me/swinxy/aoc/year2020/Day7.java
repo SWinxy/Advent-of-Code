@@ -1,4 +1,4 @@
-package me.swinxy.aoc2020;
+package me.swinxy.aoc.year2020;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Day7 {
 
 	public static void main(String[] args) {
-		InputStream stream = Day7.class.getClassLoader().getResourceAsStream("day7.txt");
+		InputStream stream = Day7.class.getClassLoader().getResourceAsStream("2020/day7.txt");
 		if (stream == null) {
 			throw new NullPointerException();
 		}
