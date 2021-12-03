@@ -1,24 +1,16 @@
 package me.swinxy.aoc.year2020;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import me.swinxy.aoc.util.TXT;
+
+import java.io.IOException;
 
 public class Day12 {
 
-	public static void main(String[] args) {
-		InputStream stream = Day12.class.getClassLoader().getResourceAsStream("2020/day12.txt");
-		if (stream == null) {
-			throw new NullPointerException();
-		}
+	public static void main(String[] args) throws IOException {
+		String[] lines = TXT.load(2020, 12);
 
-		List<String> lines = new ArrayList<>();
-		new BufferedReader(new InputStreamReader(stream)).lines().forEach(lines::add);
-
-		int angle = 0;
-		double x = 0, y = 0;
+		int angle = 90;
+		int x = 0, y = 0;
 
 		for (String line : lines) {
 			char instruction = line.charAt(0);
@@ -29,11 +21,25 @@ public class Day12 {
 				case 'S' -> y -= spaces;
 				case 'E' -> x += spaces;
 				case 'W' -> x -= spaces;
-				case 'L' -> angle += spaces;
-				case 'R' -> angle -= spaces;
+				case 'L' -> angle -= spaces;
+				case 'R' -> angle += spaces;
 				case 'F' -> {
-					x += Math.cos(Math.toRadians(angle)) * spaces;
-					y += Math.sin(Math.toRadians(angle)) * spaces;
+					angle %= 360;
+					if (angle < 0) {
+						angle += 360;
+					}
+
+					if (angle == 0) { // North
+						y += spaces;
+					} else if (angle == 90) { // East
+						x += spaces;
+					} else if (angle == 180) { // South
+						y -= spaces;
+					} else if (angle == 270) { // West
+						x -= spaces;
+					} else {
+						throw new NullPointerException("Angle was " + angle);
+					}
 				}
 			}
 		}
@@ -51,32 +57,30 @@ public class Day12 {
 			char instruction = line.charAt(0);
 			int spaces = Integer.parseInt(line.substring(1));
 
+			if (instruction == 'L' && spaces == 90 || instruction == 'R' && spaces == 270) {
+				final int wx = waypointX;
+				final int wy = waypointY;
+				waypointY = wx;
+				waypointX = -wy;
+			} else if ((instruction == 'L' || instruction == 'R') && spaces == 180) {
+				waypointX *= -1;
+				waypointY *= -1;
+			} else if (instruction == 'L' && spaces == 270 || instruction == 'R' && spaces == 90) {
+				final int wx = waypointX;
+				final int wy = waypointY;
+				waypointY = -wx;
+				waypointX = wy;
+			}
 			switch (instruction) {
 				case 'N' -> waypointY += spaces;
 				case 'S' -> waypointY -= spaces;
 				case 'E' -> waypointX += spaces;
 				case 'W' -> waypointX -= spaces;
-				case 'L' -> {
-					double ang = Math.toRadians(spaces);
-					float tX = (float) (Math.cos(ang) * waypointX - Math.sin(ang) * waypointY);
-					float tY = (float) (Math.sin(ang) * waypointX + Math.cos(ang) * waypointY);
-					waypointX = (int) tX;
-					waypointY = (int) tY;
-				}
-				case 'R' -> {
-					double ang = Math.toRadians(-spaces);
-					float tX = (int) (Math.cos(ang) * waypointX - Math.sin(ang) * waypointY);
-					float tY = (int) (Math.sin(ang) * waypointX + Math.cos(ang) * waypointY);
-					waypointX = (int) tX;
-					waypointY = (int) tY;
-				}
 				case 'F' -> {
 					x += waypointX * spaces;
 					y += waypointY * spaces;
 				}
 			}
-
-			System.out.printf("%c%d: (%f, %f) (%d, %d)%n", instruction, spaces, x, y, waypointX, waypointY);
 		}
 
 		System.out.println(Math.abs(x) + Math.abs(y));
